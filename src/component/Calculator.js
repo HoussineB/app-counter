@@ -1,62 +1,35 @@
 import React, { useState } from "react";
+import Button from '@mui/material/Button';
+import { deepOrange, deepPurple } from '@mui/material/colors';
 
 const Calculator = () => {
-  const [input, setInput] = useState("");
-  const [result, setResult] = useState("");
+    const [Calc, setCalc] = useState("");
+    return (
+        <div>
+            <input type="text" value={Calc}/>
+            <br />
+            <Button onClick={() => setCalc(Calc + '1')} variant="outlined" color="error">1</Button>
+            <Button onClick={() => setCalc(Calc + '2')} variant="outlined" color="error">2</Button>
+            <Button onClick={() => setCalc(Calc + '3')} variant="outlined" color="error">3</Button>
+            <Button onClick={() => setCalc('')} variant="outlined" color="error">c</Button>
+            <br />
+            <Button onClick={() => setCalc(Calc + '4')} variant="outlined" color="error">4</Button>
+            <Button onClick={() => setCalc(Calc + '5')} variant="outlined" color="error">5</Button>
+            <Button onClick={() => setCalc(Calc + '6')} variant="outlined" color="error">6</Button>
+            <Button onClick={() => setCalc(Calc + '-')} variant="outlined" color="error">-</Button>
+            <br />
+            <Button onClick={() => setCalc(Calc + '7')} variant="outlined" color="error">7</Button>
+            <Button onClick={() => setCalc(Calc + '8')} variant="outlined" color="error">8</Button>
+            <Button onClick={() => setCalc(Calc + '9')} variant="outlined" color="error">9</Button>
+            <Button onClick={() => setCalc(Calc + '/')} variant="outlined" color="error">/</Button>
+            <br />
+            <Button onClick={() => setCalc(Calc + '0')} variant="outlined" color="error">0</Button>
+            <Button onClick={() => setCalc(Calc + '*')} variant="outlined" color="error">*</Button>
+            <Button onClick={() => setCalc(Calc + '+')} variant="outlined" color="error">+</Button>
+            <Button onClick={() => setCalc(eval(Calc))} variant="outlined" color="error">=</Button>
 
-  const handleButtonClick = (value) => {
-    if (value === "=") {
-      try {
-        setResult(eval(input).toString());
-      } catch (error) {
-        setResult("Error");
-      }
-    } else if (value === "C") {
-      setInput("");
-      setResult("");
-    } else {
-      setInput((prevInput) => prevInput + value);
-    }
-  };
-
-  return (
-    <div>
-      <h1>Calculatrice</h1>
-      <div>
-        <input type="text" value={input} readOnly />
-      </div>
-      <div>
-        <button onClick={() => handleButtonClick("7")}>7</button>
-        <button onClick={() => handleButtonClick("8")}>8</button>
-        <button onClick={() => handleButtonClick("9")}>9</button>
-        <button onClick={() => handleButtonClick("/")}>/</button>
-      </div>
-      <div>
-        <button onClick={() => handleButtonClick("4")}>4</button>
-        <button onClick={() => handleButtonClick("5")}>5</button>
-        <button onClick={() => handleButtonClick("6")}>6</button>
-        <button onClick={() => handleButtonClick("*")}>*</button>
-      </div>
-      <div>
-        <button onClick={() => handleButtonClick("1")}>1</button>
-        <button onClick={() => handleButtonClick("2")}>2</button>
-        <button onClick={() => handleButtonClick("3")}>3</button>
-        <button onClick={() => handleButtonClick("-")}>-</button>
-      </div>
-      <div>
-        <button onClick={() => handleButtonClick("0")}>0</button>
-        <button onClick={() => handleButtonClick(".")}>.</button>
-        <button onClick={() => handleButtonClick("=")}>=</button>
-        <button onClick={() => handleButtonClick("+")}>+</button>
-      </div>
-      <div>
-        <button onClick={() => handleButtonClick("C")}>C</button>
-      </div>
-      <div>
-        <p>Result: {result}</p>
-      </div>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default Calculator;
