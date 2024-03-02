@@ -25,11 +25,8 @@ const LanguageSelector = () => {
         <option value="es">Espagnol</option>
         <option value="de">Allemand</option>
         <option value="ar">Arabe</option>
-<<<<<<< HEAD
         <option value="tr">turc</option>
-=======
         <option value="it">Italien</option>
->>>>>>> f483750c98d800537cd930ef74eb53c56a57d377
       </select>
       <br></br>
       <hr></hr>
