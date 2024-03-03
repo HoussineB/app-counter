@@ -10,17 +10,17 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 function App() {
   return (
     <div className="App">
-      <Counter message="compteur (counter)" />
+      {/* <Counter message="compteur (counter)" />
       <hr></hr>
       <Calculator />
       <hr></hr>
       <LanguageSelector />
       <hr></hr>
       <Inscription />
-      <hr></hr>
+      <hr></hr> */}
       <Router>
         <Routes>
-          <Route path="/users" element={<Users />} />
+          <Route path="/" element={<Users />} />
           <Route path="/inscription" element={<SignUpForm />} />
           <Route path="/confirmation" element={<SignUpConfirmation />} />
         </Routes>
