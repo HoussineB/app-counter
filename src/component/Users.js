@@ -10,13 +10,18 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 const Users = () => {
+  const initialUser = {
+    name: "",
+    email: "",
+  };
   const [dataUsers, setDataUsers] = useState([]);
   const [error, setError] = useState("");
   const [loadingProgress, setLoadingProgress] = useState(true);
-  const [editingUser, setEditingUser] = useState(null);
-  const [userData, setUserData] = useState({ name: "", email: "" });
+  const [modifUserId, setModifUserId] = useState(null);
+  const [userData, setUserData] = useState(initialUser);
   const apiEndpoint = "http://localhost:5001/api/users";
 
+  ////////////////////////Ajout User ////////////////////////
   const handleSaveUser = () => {
     const requestData = {
       name: userData.name,
@@ -36,12 +41,14 @@ const Users = () => {
       });
   };
 
-  const handleEditUser = (userSelected) => {
-    console.log(userSelected);
-    setEditingUser(userSelected._id);
-    setUserData(userSelected);
+  ///////////////////////////////Edit User (preparation update)////////////////
+  const handleEditUser = (dataUserSelected) => {
+    console.log(dataUserSelected);
+    setModifUserId(dataUserSelected._id);
+    setUserData(dataUserSelected);
   };
 
+  /////////////////////////////////////////////////update User/////////////////////////////
   const handleUpdateUser = (userIdSelected) => {
     const apiEndpoint = `http://localhost:5000/api/users/${userIdSelected}`;
 
@@ -58,15 +65,15 @@ const Users = () => {
             user.id === userIdSelected ? { ...user, ...requestData } : user
           )
         );
-        setEditingUser(null);
-        setUserData({ name: "", email: "" });
+        setModifUserId(null);
+        setUserData(initialUser);
       })
       .catch((error) => {
         console.error("Error while updating user:", error);
         setError(error.message);
       });
   };
-
+  ////////////////////////////////////////delete User///////////////////////////////
   const handleDeleteUser = (userId) => {
     console.log(userId);
     const apiEndpoint = `http://localhost:5000/api/users/${userId}`;
@@ -85,6 +92,7 @@ const Users = () => {
       });
   };
 
+  ///////////////////////////////////////////Affichage Users/////////////////////////////////////
   const handleDisplayUsers = () => {
     axios
       .get(apiEndpoint)
@@ -98,7 +106,7 @@ const Users = () => {
         setLoadingProgress(false);
       });
   };
-
+  ////////////////////////////////////////////fonction declancheur dataUsers modifier ///////////////////////
   useEffect(() => {
     handleDisplayUsers();
   }, [dataUsers]);
@@ -118,10 +126,29 @@ const Users = () => {
           value={userData.email}
           onChange={(e) => setUserData({ ...userData, email: e.target.value })}
         />
-        <Button variant="contained" color="primary" onClick={handleSaveUser}>
-          Add User
-        </Button>
+
+        {/* gestion button ajouter ou modifier  */}
+        {modifUserId != null ? (
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleUpdateUser(modifUserId)}
+          >
+            Update
+          </Button>
+        ) : (
+          <>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSaveUser}
+            >
+              Add
+            </Button>
+          </>
+        )}
       </div>
+
       {loadingProgress && <LinearProgress color="success" />}
       {error && <h4 style={{ color: "red" }}>{error}</h4>}
 
@@ -136,6 +163,7 @@ const Users = () => {
               <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
+
           <TableBody>
             {dataUsers.map((data) => (
               <TableRow
@@ -145,43 +173,16 @@ const Users = () => {
                 <TableCell component="th" scope="row">
                   {data._id}
                 </TableCell>
+
+                <TableCell align="right">{data.name}</TableCell>
+
+                <TableCell align="right">{data.email}</TableCell>
+
                 <TableCell align="right">
-                  {editingUser === data._id ? (
-                    <TextField
-                      value={userData.name}
-                      onChange={(e) =>
-                        setUserData({ ...userData, name: e.target.value })
-                      }
-                    />
-                  ) : (
-                    data.name
-                  )}
-                </TableCell>
-                <TableCell align="right">
-                  {editingUser === data._id ? (
-                    <TextField
-                      value={userData.email}
-                      onChange={(e) =>
-                        setUserData({ ...userData, email: e.target.value })
-                      }
-                    />
-                  ) : (
-                    data.email
-                  )}
-                </TableCell>
-                <TableCell align="right">
-                  {editingUser == data._id ? (
-                    <Button onClick={() => handleUpdateUser(editingUser)}>
-                      Update
-                    </Button>
-                  ) : (
-                    <>
-                      <Button onClick={() => handleEditUser(data)}>Edit</Button>
-                      <Button onClick={() => handleDeleteUser(data._id)}>
-                        Delete
-                      </Button>
-                    </>
-                  )}
+                  <Button onClick={() => handleEditUser(data)}>Edit</Button>
+                  <Button onClick={() => handleDeleteUser(data._id)}>
+                    Delete
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
